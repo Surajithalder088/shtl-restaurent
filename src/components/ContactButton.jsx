@@ -8,7 +8,7 @@ const ContactButton = () => {
 
         <a
           className="w-14 h-14 bg-primary-container text-on-primary rounded-full shadow-lg flex items-center justify-center hover:bg-secondary transition-colors group relative"
-          href="tel:#"
+          href="tel:9876541023"
           title="Call Restaurant"
         >
           <span
@@ -27,7 +27,7 @@ const ContactButton = () => {
 
         <a
           className="w-14 h-14 bg-[#25D366] text-white rounded-full shadow-lg flex items-center justify-center hover:bg-[#128C7E] transition-colors group relative"
-          href="#"
+          href="/"
           title="WhatsApp Restaurant"
         >
           <span

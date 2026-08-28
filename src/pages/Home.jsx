@@ -236,7 +236,7 @@ const Home = () => {
 
           <a
             className="inline-block text-link font-label-sm text-label-sm uppercase text-primary tracking-widest mt-4"
-            href="#"
+            href="/menu"
           >
             Discover Our Menu
           </a>
@@ -405,7 +405,7 @@ const Home = () => {
 
         <a
           className="btn-primary font-label-sm text-label-sm uppercase px-8 py-4 tracking-widest inline-block"
-          href="#"
+          href="/book"
         >
           Book a Table
         </a>
@@ -657,6 +657,7 @@ const Home = () => {
             <div className="relative overflow-hidden mb-6 h-64 w-full bg-surface-container">
 
               <img
+              alt="Signature Dish"
                 className="object-cover w-full h-full zoom-img"
                 data-alt="A close-up, high-end culinary photograph of a beautifully plated signature dish. The dish features seared scallops with an intricate drizzle of vibrant green herb oil, resting on a stark white ceramic plate. The lighting is moody and directional, typical of a high-end restaurant menu, emphasizing the textures of the food. The overall aesthetic is minimalist, elegant, and sophisticated."
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5VyVNLgdBoxdraePLBhEief_bn46Gwv6Cu5BeDHvauRBObkjQ5gUb66JcpGxgm4mcI5hlsL2c-TLIeheDDWzIZe2Pcgpyk_hjXWy8tpmOUIoMHKegwzpgskyqI_jsgzxvQC-uyybLNBadlGuibi7tMcvlz8fOCgyP1xl-Znmpa53AY7Jabh-OdT82mZ8QWbS7wZTvo7daYz4otZYeVuB-z0a9NghI9zx8DkBLymQwyS5b_pmDWSQw"
@@ -688,7 +689,7 @@ const Home = () => {
 
               <a
                 className="font-label-sm text-label-sm text-primary uppercase text-link self-start pb-1"
-                href="#"
+                href="/"
               >
                 Read Article
               </a>
@@ -704,6 +705,7 @@ const Home = () => {
             <div className="relative overflow-hidden mb-6 h-64 w-full bg-tertiary">
 
               <img
+              alt="Head Chef Portrait"
                 className="object-cover w-full h-full zoom-img opacity-90"
                 data-alt="A striking, moody portrait of a head chef in a dimly lit, professional kitchen. The chef is wearing a pristine white uniform, their arms crossed, looking intensely at the camera. The background is softly blurred, showing glimpses of stainless steel equipment and warm, golden lighting from the heat lamps. The style is high-contrast, professional, and editorial."
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuBaCLrrnLToPyHO9B7PxKA_Ko08rfTgBVBHkBxL31OMujRvqZpkIG3AiB91ZWBA6Lh6Fkg44ZixaQdwUodNFCpjwEYtbKCHRSP9xA4y2wTRzt5dmfI94glYmTG2Vm2Ef88J1ioUwp7Y5z-scc9IR8QE9NCtWQwRVkkuoqbYT-qYCl9vxOP5f_hi7Er14PQW6H-sACpJA92UlSXMyy8JMVevCWG3MvbAC_nhc9y0s14ru6Core68vZyH"
@@ -735,7 +737,7 @@ const Home = () => {
 
               <a
                 className="font-label-sm text-label-sm text-[#FCFAFA] uppercase border-b border-[#FCFAFA] hover:border-b-2 self-start pb-1 transition-all"
-                href="#"
+                href="/"
               >
                 Read Article
               </a>
@@ -751,6 +753,7 @@ const Home = () => {
             <div className="relative overflow-hidden mb-6 h-64 w-full bg-surface-container">
 
               <img
+              alt="Seasonal Ingredients"
                 className="object-cover w-full h-full zoom-img"
                 data-alt="A beautiful, rustic still life composition of seasonal ingredients resting on a dark wooden table. The image features vibrant heirloom tomatoes, freshly foraged mushrooms, and sprigs of green herbs. The lighting is natural and soft, evoking a sense of organic purity and farm-to-table freshness. The composition is elegant and carefully arranged, fitting a high-end food magazine aesthetic."
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmTNxtGe2V0NrfqBzOCQAu8jFrMBMO4FGUuWFSjKgNYdt4E-zC-bMidLNborOD2C6ZAs25zt5hLHbrqHDT3bHlPmV6iPK20AHScUyKUXxvUnXLZwO7-GeE64xJYPhLSvRz6WZlvCUXlrvNl9TmHlKIevJla9R-FDCGtQJJSJ3kmGWyDJit9TayDxg1lRzZ4NHg9dpW3aJYTCravW_op377tycslFeMve5-6pJswur6A__XuDK_Eq5w"
@@ -782,7 +785,7 @@ const Home = () => {
 
               <a
                 className="font-label-sm text-label-sm text-primary uppercase text-link self-start pb-1"
-                href="#"
+                href="/"
               >
                 Read Article
               </a>

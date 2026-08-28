@@ -27,21 +27,21 @@ const Footer = () => {
 
               <a
                 className="font-label-sm text-label-sm text-on-primary-container dark:text-on-surface-variant hover:text-secondary transition-colors hover:border-b border-secondary hover:opacity-80 transition-opacity"
-                href="#"
+                href="/menu"
               >
                 Menu
               </a>
 
               <a
                 className="font-label-sm text-label-sm text-on-primary-container dark:text-on-surface-variant hover:text-secondary transition-colors hover:border-b border-secondary hover:opacity-80 transition-opacity"
-                href="#"
+                href="/book"
               >
                 Reservations
               </a>
 
               <a
                 className="font-label-sm text-label-sm text-on-primary-container dark:text-on-surface-variant hover:text-secondary transition-colors hover:border-b border-secondary hover:opacity-80 transition-opacity"
-                href="#"
+                href="/book"
               >
                 Private Dining
               </a>
@@ -53,21 +53,21 @@ const Footer = () => {
 
               <a
                 className="font-label-sm text-label-sm text-on-primary-container dark:text-on-surface-variant hover:text-secondary transition-colors hover:border-b border-secondary hover:opacity-80 transition-opacity"
-                href="#"
+                href="/"
               >
                 Careers
               </a>
 
               <a
                 className="font-label-sm text-label-sm text-on-primary-container dark:text-on-surface-variant hover:text-secondary transition-colors hover:border-b border-secondary hover:opacity-80 transition-opacity"
-                href="#"
+                href="/"
               >
                 Privacy Policy
               </a>
 
               <a
                 className="font-label-sm text-label-sm text-on-primary-container dark:text-on-surface-variant hover:text-secondary transition-colors hover:border-b border-secondary hover:opacity-80 transition-opacity"
-                href="#"
+                href="/"
               >
                 Terms of Service
               </a>

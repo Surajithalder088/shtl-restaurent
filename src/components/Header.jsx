@@ -52,7 +52,7 @@ const Header = () => {
 
           <div className="hidden md:flex gap-4 items-center">
 
-            <a className="text-link" href="#">
+            <a className="text-link" href="/contact">
               Call Now
             </a>
 
