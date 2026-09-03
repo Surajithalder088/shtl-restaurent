@@ -2,34 +2,76 @@ import React from 'react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import ContactButton from '../components/ContactButton'
+import { motion } from "motion/react";
 
 const Home = () => {
+
+  const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.4, // 0.3 second gap between children
+    },
+  },
+};
+
+const childVariants = {
+  hidden: {
+    opacity: 0,
+    y: 60, // Bottom → Top
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: "easeOut",
+    },
+  },
+};
   return (
     <div>
       <Header />
 
       {/* 1. Hero Section */}
 
-      <section className="relative pt-[50px] h-[90vh] min-h-[600px] flex items-center justify-center w-full bg-[#1A1A1A] overflow-hidden">
+      <section className="relative pt-[50px] h-[90vh] min-h-[600px] flex items-center justify-center w-full bg-[#808080] overflow-hidden">
 
         <div
-          className="absolute inset-0 bg-cover bg-center w-full h-full opacity-60"
-          data-alt="A cinematic, high-end food photograph of a beautifully plated contemporary dish in a dimly lit, luxury restaurant setting. The lighting is dramatic, highlighting the textures of the food against a dark, moody background. Rich warm tones contrast with crisp, pristine details, embodying a sophisticated 'New Editorial' aesthetic. Perfect high-contrast luxury dining atmosphere."
-          style={{
-            backgroundImage:
-              "url('https://lh3.googleusercontent.com/aida-public/AB6AXuCqGleIPj-JndIMtijcoccaq5vUHf3LyQlvfCkJ3FwrcSe6zT-PmDyyaniRQPzzSckU5I2mWG3XoDg4Rd5ccjeO6e7xebKmmWI1A6Z_vm5O7wvnb7gEoARspt8J1-iCVZOjQFigHnzN1pkwuWVo83h7p4jzq3ZmtNlFpFcyURGwUc0zX9iiNH-Owi4JZ-obShhRkbZHTJZQc_Zbqp5i58oB3ClSQZuBIeQu1lFRQxo-HmJfNDOIo3uG')",
-          }}
-        ></div>
+  className="absolute inset-0 w-full h-full "
+  data-alt="A cinematic, high-end food photograph of a beautifully plated contemporary dish in a dimly lit, luxury restaurant setting."
+>
+  <video
+    className="w-full h-full object-cover bg-center"
+    autoPlay
+    loop
+    muted
+    playsInline
+  >
+    <source
+      src="/media/restaurent-bg-vid.mp4"
+      type="video/mp4"
+    />
+  </video>
+</div>
 
         <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A] via-transparent to-transparent"></div>
 
         <div className="relative z-10 text-center px-margin-mobile md:px-margin-desktop max-w-4xl mx-auto flex flex-col items-center gap-8">
 
-          <h1 className="font-display-lg text-display-lg text-[#FCFAFA] font-bold tracking-tight">
+          <motion.h1
+            initial={{ opacity: 0, y: -100 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: false, amount: 0.2 }}
+  transition={{
+    duration: 1.4,
+    ease: "easeOut",
+  }}
+          className="font-display-lg text-display-lg text-[#FCFAFA] font-bold tracking-tight">
             Exceptional Food.
             <br />
             Memorable Moments.
-          </h1>
+          </motion.h1>
 
           <p className="font-body-lg text-body-lg text-[#FCFAFA]/80 max-w-2xl">
             Discover thoughtfully crafted dishes, warm hospitality and an atmosphere designed for unforgettable dining.
@@ -37,13 +79,29 @@ const Home = () => {
 
           <div className="flex flex-col sm:flex-row gap-6 mt-4">
 
-            <button className="btn-primary">
+            <motion.button 
+              initial={{ opacity: 0, x: -100 }}
+  whileInView={{ opacity: 1, x: 0 }}
+  viewport={{ once: false, amount: 0.2 }}
+  transition={{
+    duration: 1.4,
+    ease: "easeOut",
+  }}
+             className="btn-primary">
               Book a Table
-            </button>
+            </motion.button>
 
-            <button className="btn-secondary !text-[#FCFAFA] !border-[#FCFAFA] hover:!bg-[#FCFAFA] hover:!text-[#1A1A1A]">
+            <motion.button 
+              initial={{ opacity: 0, x: 100 }}
+  whileInView={{ opacity: 1, x: 0 }}
+  viewport={{ once: false, amount: 0.2 }}
+  transition={{
+    duration: 1.4,
+    ease: "easeOut",
+  }}
+             className="btn-secondary !text-[#FCFAFA] !border-[#FCFAFA] hover:!bg-[#FCFAFA] hover:!text-[#1A1A1A]">
               Explore Our Menu
-            </button>
+            </motion.button>
 
           </div>
 
@@ -60,9 +118,17 @@ const Home = () => {
 
       <section className="py-stack-lg px-margin-mobile md:px-margin-desktop bg-surface max-w-container-max mx-auto border-b border-outline-variant/20">
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+        <motion.div
+            variants={containerVariants}
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: false, amount: 0.2 }}
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
 
-          <div className="flex flex-col items-center text-center p-8 hover-lift">
+          <motion.div 
+                variants={childVariants}
+
+          className="flex flex-col items-center text-center p-8 hover-lift">
 
             <span
               className="material-symbols-outlined text-4xl mb-4 text-[#C5A059]"
@@ -85,10 +151,13 @@ const Home = () => {
               Sourced locally and prepared daily for maximum flavor.
             </p>
 
-          </div>
+          </motion.div>
 
 
-          <div className="flex flex-col items-center text-center p-8 hover-lift">
+          <motion.div 
+                variants={childVariants}
+
+          className="flex flex-col items-center text-center p-8 hover-lift">
 
             <span
               className="material-symbols-outlined text-4xl mb-4 text-[#C5A059]"
@@ -111,10 +180,13 @@ const Home = () => {
               Every dish is an expression of our culinary dedication.
             </p>
 
-          </div>
+          </motion.div>
 
 
-          <div className="flex flex-col items-center text-center p-8 hover-lift">
+          <motion.div 
+                variants={childVariants}
+
+          className="flex flex-col items-center text-center p-8 hover-lift">
 
             <span
               className="material-symbols-outlined text-4xl mb-4 text-[#C5A059]"
@@ -137,10 +209,13 @@ const Home = () => {
               Service that makes you feel right at home.
             </p>
 
-          </div>
+          </motion.div>
 
 
-          <div className="flex flex-col items-center text-center p-8 hover-lift">
+          <motion.div 
+                variants={childVariants}
+
+          className="flex flex-col items-center text-center p-8 hover-lift">
 
             <span
               className="material-symbols-outlined text-4xl mb-4 text-[#C5A059]"
@@ -163,9 +238,9 @@ const Home = () => {
               An atmosphere designed for intimate and joyous gatherings.
             </p>
 
-          </div>
+          </motion.div>
 
-        </div>
+        </motion.div>
 
       </section>
 
@@ -185,7 +260,15 @@ const Home = () => {
 
         </div>
 
-        <div className="mt-stack-md w-full h-[60vh] overflow-hidden image-zoom relative">
+        <motion.div 
+        initial={{ opacity: 0, y: 100 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: false, amount: 0.2 }}
+  transition={{
+    duration: 0.8,
+    ease: "easeOut",
+  }}
+        className="mt-stack-md w-full h-[60vh] overflow-hidden image-zoom relative">
 
           <div
             className="w-full h-full bg-cover bg-center absolute inset-0"
@@ -196,7 +279,7 @@ const Home = () => {
             }}
           ></div>
 
-        </div>
+        </motion.div>
 
       </section>
 
@@ -205,7 +288,15 @@ const Home = () => {
 
       <section className="py-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-2 gap-gutter items-center">
 
-        <div className="order-2 md:order-1 h-[500px] overflow-hidden image-zoom relative border border-outline-variant/30">
+        <motion.div
+        initial={{ opacity: 0, x: -100 }}
+  whileInView={{ opacity: 1, x: 0 }}
+  viewport={{ once: false, amount: 0.2 }}
+  transition={{
+    duration: 0.8,
+    ease: "easeOut",
+  }}
+        className="order-2 md:order-1 h-[500px] overflow-hidden image-zoom relative border border-outline-variant/30">
 
           <img
             alt="Philosophy Plating"
@@ -214,34 +305,46 @@ const Home = () => {
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUONCOy1AJ7awR1ssdEwpS09XEsW5jth-ySUt1AnrET-wNvk_G_xudd1iCFKNXxQFW0mH_-RbIrHX2zUSZdliqU2cq3OxGNGcjG2aEoBYyNKHtIfLv9woA-wLmloJguGDhW79A3Tyg-BdXk1_j1XEOHLnPkftvdJWCzH7HxjPZ6saHh6y9xYqgl6H0Kdd_KCmWu0-eloUjfrKRetGotjbggu-kUGm90KV_y5F5JVpO-3i5aPLoTmDj"
           />
 
-        </div>
+        </motion.div>
 
-        <div className="order-1 md:order-2 space-y-8 md:pl-margin-desktop">
+        <motion.div 
+                variants={containerVariants}
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: false, amount: 0.2 }}
+        className="order-1 md:order-2 space-y-8 md:pl-margin-desktop">
 
-          <h2 className="font-headline-lg text-headline-lg text-primary">
+          <motion.h2 
+           variants={childVariants}
+          className="font-headline-lg text-headline-lg text-primary">
             A Philosophy of Fire
-          </h2>
+          </motion.h2>
 
-          <div className="space-y-4 text-on-surface-variant font-body-md text-body-md">
+          
 
-            <p>
+            <motion.p
+             variants={childVariants}
+            className="space-y-4 text-on-surface-variant font-body-md text-body-md">
               Born from a deep respect for the elemental forces of cooking, Ember &amp; Plate was founded on the belief that fire transforms not just food, but the entire dining experience. Our journey began in the rugged landscapes where open-flame cooking is a necessity, refined over decades into an art form.
-            </p>
+            </motion.p>
 
-            <p>
+            <motion.p
+             variants={childVariants}
+             className="space-y-4 text-on-surface-variant font-body-md text-body-md">
               We source only the most exceptional, ethically raised ingredients, allowing their natural qualities to dictate our menu. Our commitment to quality is unwavering—every dish is a testament to our dedication to flavor, technique, and genuine hospitality.
-            </p>
+            </motion.p>
 
-          </div>
+         
 
-          <a
+          <motion.a
+           variants={childVariants}
             className="inline-block text-link font-label-sm text-label-sm uppercase text-primary tracking-widest mt-4"
             href="/menu"
           >
             Discover Our Menu
-          </a>
+          </motion.a>
 
-        </div>
+        </motion.div>
 
       </section>
 
@@ -252,21 +355,30 @@ const Home = () => {
 
         <div className="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-2 gap-gutter items-center">
 
-          <div className="space-y-6 md:pr-margin-desktop">
+          <motion.div 
+               variants={containerVariants}
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: false, amount: 0.2 }}
+          className="space-y-6 md:pr-margin-desktop">
 
-            <span className="font-label-sm text-label-sm uppercase text-secondary tracking-widest">
+            <motion.span 
+             variants={childVariants}
+            className="font-label-sm text-label-sm uppercase text-secondary tracking-widest">
               Head Chef
-            </span>
+            </motion.span>
 
-            <h2 className="font-headline-lg text-headline-lg text-on-primary">
+            <motion.h2 
+            variants={childVariants}
+            className="font-headline-lg text-headline-lg text-on-primary">
               Marcus Vance
-            </h2>
+            </motion.h2>
 
-            <p className="font-body-lg text-body-lg text-on-primary-container leading-relaxed">
+            <motion.p variants={childVariants} className="font-body-lg text-body-lg text-on-primary-container leading-relaxed">
               With over two decades of experience spanning the globe's culinary capitals, Chef Vance brings a relentless pursuit of perfection to Ember &amp; Plate. His signature approach marries classical French technique with the raw, untamed nature of live-fire cooking, resulting in bold, uncompromising flavors.
-            </p>
+            </motion.p>
 
-          </div>
+          </motion.div>
 
           <div className="h-[600px] overflow-hidden image-zoom relative border border-secondary/30">
 
@@ -301,11 +413,14 @@ const Home = () => {
         </div>
 
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+        <motion.div  variants={containerVariants}
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: false, amount: 0.2 }} className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
 
           {/* Bento Item 1 */}
 
-          <div className="hover-lift bg-surface-container-low p-8 border border-outline-variant/20 flex flex-col items-center text-center space-y-4">
+          <motion.div variants={childVariants} className="hover-lift bg-surface-container-low p-8 border border-outline-variant/20 flex flex-col items-center text-center space-y-4">
 
             <div className="w-16 h-16 rounded-full bg-secondary-container/20 flex items-center justify-center text-secondary">
 
@@ -328,12 +443,12 @@ const Home = () => {
               Harvested daily from organic partners within a 50-mile radius, ensuring peak vitality and flavor.
             </p>
 
-          </div>
+          </motion.div>
 
 
           {/* Bento Item 2 */}
 
-          <div className="hover-lift bg-surface-container-low p-8 border border-outline-variant/20 flex flex-col items-center text-center space-y-4">
+          <motion.div  variants={childVariants} className="hover-lift bg-surface-container-low p-8 border border-outline-variant/20 flex flex-col items-center text-center space-y-4">
 
             <div className="w-16 h-16 rounded-full bg-secondary-container/20 flex items-center justify-center text-secondary">
 
@@ -356,12 +471,12 @@ const Home = () => {
               Responsibly line-caught and delivered within hours to guarantee unparalleled freshness.
             </p>
 
-          </div>
+          </motion.div>
 
 
           {/* Bento Item 3 */}
 
-          <div className="hover-lift bg-surface-container-low p-8 border border-outline-variant/20 flex flex-col items-center text-center space-y-4">
+          <motion.div variants={childVariants} className="hover-lift bg-surface-container-low p-8 border border-outline-variant/20 flex flex-col items-center text-center space-y-4">
 
             <div className="w-16 h-16 rounded-full bg-secondary-container/20 flex items-center justify-center text-secondary">
 
@@ -384,9 +499,9 @@ const Home = () => {
               Ethically pasture-raised and dry-aged in-house to develop deep, complex characteristics.
             </p>
 
-          </div>
+          </motion.div>
 
-        </div>
+        </motion.div>
 
       </section>
 
@@ -414,7 +529,15 @@ const Home = () => {
 
       {/* Gallery Header */}
 
-      <section className="w-full pt-stack-lg pb-stack-md px-margin-mobile md:px-margin-desktop text-center max-w-container-max mx-auto">
+      <motion.section 
+        initial={{ opacity: 0, y: 100 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: false, amount: 0.2 }}
+  transition={{
+    duration: 1.4,
+    ease: "easeOut",
+  }}
+      className="w-full pt-stack-lg pb-stack-md px-margin-mobile md:px-margin-desktop text-center max-w-container-max mx-auto">
 
         <h1 className="font-display-lg text-display-lg text-primary mb-6">
           The Gallery
@@ -426,7 +549,7 @@ const Home = () => {
 
         <div className="w-16 h-px bg-[#C5A059] mx-auto mt-8"></div>
 
-      </section>
+      </motion.section>
 
 
       {/* Filter Section */}
@@ -468,11 +591,15 @@ const Home = () => {
 
       <section className="w-full px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto mb-stack-lg">
 
-        <div className="masonry-grid">
+        <motion.div 
+        variants={containerVariants}
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: false, amount: 0.2 }} className="masonry-grid">
 
           {/* Gallery Item 1 */}
 
-          <div className="masonry-item relative group cursor-pointer bg-surface overflow-hidden">
+          <motion.div  variants={childVariants} className="masonry-item relative group cursor-pointer bg-surface overflow-hidden">
 
             <img
               alt="Plated Dish"
@@ -492,12 +619,12 @@ const Home = () => {
 
             </div>
 
-          </div>
+          </motion.div>
 
 
           {/* Gallery Item 2 */}
 
-          <div className="masonry-item relative group cursor-pointer bg-surface overflow-hidden">
+          <motion.div  variants={childVariants} className="masonry-item relative group cursor-pointer bg-surface overflow-hidden">
 
             <img
               alt="Restaurant Interior"
@@ -517,12 +644,12 @@ const Home = () => {
 
             </div>
 
-          </div>
+          </motion.div>
 
 
           {/* Gallery Item 3 */}
 
-          <div className="masonry-item relative group cursor-pointer bg-surface overflow-hidden">
+          <motion.div  variants={childVariants} className="masonry-item relative group cursor-pointer bg-surface overflow-hidden">
 
             <img
               alt="Chef Plating"
@@ -542,12 +669,12 @@ const Home = () => {
 
             </div>
 
-          </div>
+          </motion.div>
 
 
           {/* Gallery Item 4 */}
 
-          <div className="masonry-item relative group cursor-pointer bg-surface overflow-hidden">
+          <motion.div  variants={childVariants} className="masonry-item relative group cursor-pointer bg-surface overflow-hidden">
 
             <img
               alt="Craft Cocktail"
@@ -567,12 +694,12 @@ const Home = () => {
 
             </div>
 
-          </div>
+          </motion.div>
 
 
           {/* Gallery Item 5 */}
 
-          <div className="masonry-item relative group cursor-pointer bg-surface overflow-hidden">
+          <motion.div variants={childVariants} className="masonry-item relative group cursor-pointer bg-surface overflow-hidden">
 
             <img
               alt="Private Dining Setup"
@@ -592,12 +719,12 @@ const Home = () => {
 
             </div>
 
-          </div>
+          </motion.div>
 
 
           {/* Gallery Item 6 */}
 
-          <div className="masonry-item relative group cursor-pointer bg-surface overflow-hidden">
+          <motion.div  variants={childVariants} className="masonry-item relative group cursor-pointer bg-surface overflow-hidden">
 
             <img
               alt="Artisan Bread"
@@ -617,9 +744,9 @@ const Home = () => {
 
             </div>
 
-          </div>
+          </motion.div>
 
-        </div>
+        </motion.div>
 
 
         <div className="mt-12 flex justify-center">
@@ -648,16 +775,21 @@ const Home = () => {
 
       <section className="py-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+        <motion.div 
+           variants={containerVariants}
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: false, amount: 0.2 }}
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
 
           {/* Article Card 1 */}
 
-          <article className="group cursor-pointer card-lift bg-[#FCFAFA] p-6 lg:p-10 flex flex-col h-full border border-outline-variant/30">
+          <motion.article  variants={childVariants} className="group cursor-pointer card-lift bg-[#FCFAFA] p-6 lg:p-10 flex flex-col h-full border border-outline-variant/30">
 
             <div className="relative overflow-hidden mb-6 h-64 w-full bg-surface-container">
 
               <img
-              alt="Signature Dish"
+                alt="Signature Dish"
                 className="object-cover w-full h-full zoom-img"
                 data-alt="A close-up, high-end culinary photograph of a beautifully plated signature dish. The dish features seared scallops with an intricate drizzle of vibrant green herb oil, resting on a stark white ceramic plate. The lighting is moody and directional, typical of a high-end restaurant menu, emphasizing the textures of the food. The overall aesthetic is minimalist, elegant, and sophisticated."
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5VyVNLgdBoxdraePLBhEief_bn46Gwv6Cu5BeDHvauRBObkjQ5gUb66JcpGxgm4mcI5hlsL2c-TLIeheDDWzIZe2Pcgpyk_hjXWy8tpmOUIoMHKegwzpgskyqI_jsgzxvQC-uyybLNBadlGuibi7tMcvlz8fOCgyP1xl-Znmpa53AY7Jabh-OdT82mZ8QWbS7wZTvo7daYz4otZYeVuB-z0a9NghI9zx8DkBLymQwyS5b_pmDWSQw"
@@ -696,16 +828,16 @@ const Home = () => {
 
             </div>
 
-          </article>
+          </motion.article>
 
           {/* Article Card 2 */}
 
-          <article className="group cursor-pointer card-lift bg-[#1A1A1A] p-6 lg:p-10 flex flex-col h-full">
+          <motion.article  variants={childVariants} className="group cursor-pointer card-lift bg-[#1A1A1A] p-6 lg:p-10 flex flex-col h-full">
 
             <div className="relative overflow-hidden mb-6 h-64 w-full bg-tertiary">
 
               <img
-              alt="Head Chef Portrait"
+                alt="Head Chef Portrait"
                 className="object-cover w-full h-full zoom-img opacity-90"
                 data-alt="A striking, moody portrait of a head chef in a dimly lit, professional kitchen. The chef is wearing a pristine white uniform, their arms crossed, looking intensely at the camera. The background is softly blurred, showing glimpses of stainless steel equipment and warm, golden lighting from the heat lamps. The style is high-contrast, professional, and editorial."
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuBaCLrrnLToPyHO9B7PxKA_Ko08rfTgBVBHkBxL31OMujRvqZpkIG3AiB91ZWBA6Lh6Fkg44ZixaQdwUodNFCpjwEYtbKCHRSP9xA4y2wTRzt5dmfI94glYmTG2Vm2Ef88J1ioUwp7Y5z-scc9IR8QE9NCtWQwRVkkuoqbYT-qYCl9vxOP5f_hi7Er14PQW6H-sACpJA92UlSXMyy8JMVevCWG3MvbAC_nhc9y0s14ru6Core68vZyH"
@@ -744,16 +876,16 @@ const Home = () => {
 
             </div>
 
-          </article>
+          </motion.article>
 
           {/* Article Card 3 */}
 
-          <article className="group cursor-pointer card-lift bg-[#FCFAFA] p-6 lg:p-10 flex flex-col h-full border border-outline-variant/30">
+          <motion.article  variants={childVariants} className="group cursor-pointer card-lift bg-[#FCFAFA] p-6 lg:p-10 flex flex-col h-full border border-outline-variant/30">
 
             <div className="relative overflow-hidden mb-6 h-64 w-full bg-surface-container">
 
               <img
-              alt="Seasonal Ingredients"
+                alt="Seasonal Ingredients"
                 className="object-cover w-full h-full zoom-img"
                 data-alt="A beautiful, rustic still life composition of seasonal ingredients resting on a dark wooden table. The image features vibrant heirloom tomatoes, freshly foraged mushrooms, and sprigs of green herbs. The lighting is natural and soft, evoking a sense of organic purity and farm-to-table freshness. The composition is elegant and carefully arranged, fitting a high-end food magazine aesthetic."
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmTNxtGe2V0NrfqBzOCQAu8jFrMBMO4FGUuWFSjKgNYdt4E-zC-bMidLNborOD2C6ZAs25zt5hLHbrqHDT3bHlPmV6iPK20AHScUyKUXxvUnXLZwO7-GeE64xJYPhLSvRz6WZlvCUXlrvNl9TmHlKIevJla9R-FDCGtQJJSJ3kmGWyDJit9TayDxg1lRzZ4NHg9dpW3aJYTCravW_op377tycslFeMve5-6pJswur6A__XuDK_Eq5w"
@@ -792,9 +924,9 @@ const Home = () => {
 
             </div>
 
-          </article>
+          </motion.article>
 
-        </div>
+        </motion.div>
 
       </section>
 
@@ -835,7 +967,7 @@ const Home = () => {
 
 
       {/* Quick Actions Floating (Desktop: side, Mobile: bottom) */}
-     <ContactButton/>
+      <ContactButton />
 
 
 

@@ -7,7 +7,7 @@ const Contact = () => {
   return (
     <div>
       <Header />
-      <section className="text-center pt-[80px] mb-stack-lg">
+      <section className="text-center pt-[80px] mb-stack-lg px-3">
         <h1 className="font-display-lg text-display-lg text-primary mb-6">
           Connect With Us
         </h1>
@@ -18,7 +18,7 @@ const Contact = () => {
       </section>
 
       {/* Main Content Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter mb-stack-lg">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter mb-stack-lg p-6">
 
         {/* Left Column: Info Grid & Contact Form */}
         <div className="lg:col-span-5 space-y-stack-md">
