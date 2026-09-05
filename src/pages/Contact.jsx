@@ -2,8 +2,10 @@ import React from 'react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import ContactButton from '../components/ContactButton'
+//import { useSelector } from 'react-redux'
 
 const Contact = () => {
+   //  const appName = useSelector((state) => state.app["app-name"]);
   return (
     <div>
       <Header />

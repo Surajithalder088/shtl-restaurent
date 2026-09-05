@@ -3,8 +3,10 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 import ContactButton from '../components/ContactButton'
 import { motion } from "motion/react";
+import { useSelector } from 'react-redux';
 
 const About = () => {
+     const appName = useSelector((state) => state.app["app-name"]);
 
     const containerVariants = {
   hidden: {},
@@ -453,7 +455,7 @@ const childVariants = {
         <section className="py-stack-lg px-margin-mobile md:px-margin-desktop text-center border-t border-outline-variant/20 max-w-3xl mx-auto">
 
         <h2 className="font-headline-lg text-headline-lg text-primary mb-6">
-          Experience EMBER &amp; PLATE
+          Experience {appName}
         </h2>
 
         <p className="font-body-lg text-body-lg text-on-surface-variant mb-8">
@@ -478,7 +480,7 @@ const childVariants = {
         </h1>
 
         <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">
-          A visual exploration of our culinary philosophy, intimate spaces, and the art of dining at Ember &amp; Plate.
+          A visual exploration of our culinary philosophy, intimate spaces, and the art of dining at {appName}.
         </p>
 
         <div className="w-16 h-px bg-[#C5A059] mx-auto mt-8"></div>

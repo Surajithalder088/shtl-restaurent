@@ -1,8 +1,10 @@
 import React from 'react'
+import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 
 const Header = () => {
     const location = useLocation();
+      const appName = useSelector((state) => state.app["app-name"]);
 
   const isActive = (path) => location.pathname === path;
   return (
@@ -12,7 +14,7 @@ const Header = () => {
         <div className="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
 
           <div className="font-headline-md text-headline-md font-bold tracking-tight text-primary dark:text-on-surface">
-            EMBER &amp; PLATE
+            {appName}
           </div>
 
             <nav className="hidden md:flex gap-8">

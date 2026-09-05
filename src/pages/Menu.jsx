@@ -3,8 +3,10 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 import ContactButton from '../components/ContactButton'
 import { motion } from "motion/react";
+import { useSelector } from 'react-redux';
 
 const Menu = () => {
+     const appName = useSelector((state) => state.app["app-name"]);
      const containerVariants = {
   hidden: {},
   visible: {
@@ -444,7 +446,7 @@ const childVariants = {
             </motion.h2>
 
             <motion.p variants={childVariants}  className="font-body-lg text-body-lg text-outline-variant mb-8 max-w-md">
-              Discover seasonal masterpieces designed to provoke the palate. A symphony of textures and flavours, exclusive to Ember &amp; Plate.
+              Discover seasonal masterpieces designed to provoke the palate. A symphony of textures and flavours, exclusive to {appName}.
             </motion.p>
 
             <motion.button variants={childVariants} className="font-label-sm text-label-sm uppercase bg-transparent text-secondary border border-secondary px-8 py-4 rounded-none hover:bg-secondary hover:text-on-secondary transition-colors duration-300">

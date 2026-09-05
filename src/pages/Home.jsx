@@ -1,112 +1,250 @@
-import React from 'react'
+
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import ContactButton from '../components/ContactButton'
 import { motion } from "motion/react";
+import Handwriting from '../components/Handwriting';
+
+
+
+import { useLayoutEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useSelector } from 'react-redux';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Home = () => {
+   const appName = useSelector((state) => state.app["app-name"]);
+
+  const sectionRef = useRef(null);
+  const headerRef = useRef(null);
+
+
+  const heroDetailsRef = useRef(null);
+  const section2Ref = useRef(null);
+  const transitionRef = useRef(null)
+
+  const section2ContentRef = useRef(null)
+
 
   const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.4, // 0.3 second gap between children
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.4, // 0.3 second gap between children
+      },
     },
-  },
-};
+  };
 
-const childVariants = {
-  hidden: {
-    opacity: 0,
-    y: 60, // Bottom → Top
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.8,
-      ease: "easeOut",
+  const childVariants = {
+    hidden: {
+      opacity: 0,
+      y: 60, // Bottom → Top
     },
-  },
-};
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut",
+      },
+    },
+  };
+
+
+  //first section scroll
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      const section = sectionRef.current;
+      const header = headerRef.current;
+      const heroDetail = heroDetailsRef.current;
+
+
+      // HEADER — keep existing functionality unchanged
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top top",
+        end: "bottom top",
+        pin: header,
+        pinSpacing: false,
+
+        onUpdate: (self) => {
+          gsap.set(header, {
+            opacity: self.progress < 0.8 ? 1 : 0,
+          });
+        },
+      });
+
+      // HERO DETAILS — disappear immediately when scrolling starts
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top top-=40px",
+        end: "bottom top",
+
+        onEnter: () => {
+          gsap.set(heroDetail, {
+            opacity: 0,
+          });
+        },
+
+        onLeaveBack: () => {
+          gsap.set(heroDetail, {
+            opacity: 1,
+          });
+        },
+      });
+
+
+    },
+      sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
+
+  // second section scroll
+
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      // Set Section 2's initial state
+      gsap.set(section2Ref.current, {
+        clipPath: "circle(0% at 50% 50%)",
+        scale: 0.2,
+      });
+
+      // Set Section 2 content initial state
+      gsap.set(section2ContentRef.current, {
+        opacity: 0,
+        y: 50,
+      });
+
+      const tl = gsap.timeline();
+
+      // Section 2 expands
+      tl.to(section2Ref.current, {
+        clipPath: "circle(100% at 50% 50%)",
+        scale: 1,
+        ease: "power2.inOut",
+        duration: 1.2,
+      });
+
+      // Then content appears
+      tl.to(section2ContentRef.current, {
+        opacity: 1,
+        y: 0,
+        ease: "power2.out",
+        duration: 0.5,
+      });
+
+      ScrollTrigger.create({
+        trigger: transitionRef.current,
+        start: "bottom bottom",
+
+        // 300px is the distance over which the animation happens
+        end: "+=300",
+
+        // Scroll forward = animation forward
+        // Scroll backward = animation backward
+        scrub: true,
+
+        pin: true,
+        anticipatePin: 1,
+        animation: tl,
+      });
+    });
+
+    return () => ctx.revert();
+  }, []);
+
+
   return (
     <div>
       <Header />
 
       {/* 1. Hero Section */}
 
-      <section className="relative pt-[50px] h-[90vh] min-h-[600px] flex items-center justify-center w-full bg-[#808080] overflow-hidden">
+
+
+      <section ref={sectionRef}
+        className="relative pt-[50px] h-[100vh] min-h-[600px] flex items-center justify-center w-full bg-[#808080] overflow-hidden"
+      >
 
         <div
-  className="absolute inset-0 w-full h-full "
-  data-alt="A cinematic, high-end food photograph of a beautifully plated contemporary dish in a dimly lit, luxury restaurant setting."
->
-  <video
-    className="w-full h-full object-cover bg-center"
-    autoPlay
-    loop
-    muted
-    playsInline
-  >
-    <source
-      src="/media/restaurent-bg-vid.mp4"
-      type="video/mp4"
-    />
-  </video>
-</div>
+          className="absolute inset-0 w-full h-full "
+          data-alt="A cinematic, high-end food photograph of a beautifully plated contemporary dish in a dimly lit, luxury restaurant setting."
+        >
+          <video
+            className="w-full h-full object-cover bg-center"
+            autoPlay
+            loop
+            muted
+            playsInline
+          >
+            <source
+              src="/media/restaurent-bg-vid.mp4"
+              type="video/mp4"
+            />
+          </video>
+        </div>
+
 
         <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A] via-transparent to-transparent"></div>
 
-        <div className="relative z-10 text-center px-margin-mobile md:px-margin-desktop max-w-4xl mx-auto flex flex-col items-center gap-8">
+        <div className="relative z-10 text-center px-margin-mobile md:px-margin-desktop max-w-4xl mx-auto flex flex-col items-center justify-between gap-8">
 
           <motion.h1
+            ref={headerRef}
             initial={{ opacity: 0, y: -100 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: false, amount: 0.2 }}
-  transition={{
-    duration: 1.4,
-    ease: "easeOut",
-  }}
-          className="font-display-lg text-display-lg text-[#FCFAFA] font-bold tracking-tight">
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.2 }}
+            transition={{
+              duration: 1.4,
+              ease: "easeOut",
+            }}
+            className="font-display-lg z-20 text-display-lg text-[#FCFAFA] font-bold tracking-tight  [text-shadow:3px_3px_8px_rgba(80,80,80,0.95)]"
+          >
             Exceptional Food.
             <br />
             Memorable Moments.
           </motion.h1>
 
-          <p className="font-body-lg text-body-lg text-[#FCFAFA]/80 max-w-2xl">
-            Discover thoughtfully crafted dishes, warm hospitality and an atmosphere designed for unforgettable dining.
-          </p>
+          <div ref={heroDetailsRef} className="flex flex-col items-center">
+            <p className="font-body-lg text-body-lg text-[#FCFAFA]/80 max-w-2xl">
+              Discover thoughtfully crafted dishes, warm hospitality and an atmosphere designed for unforgettable dining.
+            </p>
 
-          <div className="flex flex-col sm:flex-row gap-6 mt-4">
+            <div className="flex flex-col sm:flex-row gap-6 mt-4">
 
-            <motion.button 
-              initial={{ opacity: 0, x: -100 }}
-  whileInView={{ opacity: 1, x: 0 }}
-  viewport={{ once: false, amount: 0.2 }}
-  transition={{
-    duration: 1.4,
-    ease: "easeOut",
-  }}
-             className="btn-primary">
-              Book a Table
-            </motion.button>
+              <motion.button
+                initial={{ opacity: 0, x: -100 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: false, amount: 0.2 }}
+                transition={{
+                  duration: 1.4,
+                  ease: "easeOut",
+                }}
+                className="btn-primary">
+                Book a Table
+              </motion.button>
 
-            <motion.button 
-              initial={{ opacity: 0, x: 100 }}
-  whileInView={{ opacity: 1, x: 0 }}
-  viewport={{ once: false, amount: 0.2 }}
-  transition={{
-    duration: 1.4,
-    ease: "easeOut",
-  }}
-             className="btn-secondary !text-[#FCFAFA] !border-[#FCFAFA] hover:!bg-[#FCFAFA] hover:!text-[#1A1A1A]">
-              Explore Our Menu
-            </motion.button>
+              <motion.button
+                initial={{ opacity: 0, x: 100 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: false, amount: 0.2 }}
+                transition={{
+                  duration: 1.4,
+                  ease: "easeOut",
+                }}
+                className="btn-secondary !text-[#FCFAFA] !border-[#FCFAFA] hover:!bg-[#FCFAFA] hover:!text-[#1A1A1A]">
+                Explore Our Menu
+              </motion.button>
 
-          </div>
+            </div>
 
-          <div className="mt-8 font-label-sm text-label-sm text-[#FCFAFA]/60 tracking-[0.2em] uppercase">
-            Open Daily • 10:00 AM – 11:00 PM
+            <div className="mt-8 font-label-sm text-label-sm text-[#FCFAFA]/60 tracking-[0.2em] uppercase">
+              Open Daily • 10:00 AM – 11:00 PM
+            </div>
           </div>
 
         </div>
@@ -116,19 +254,26 @@ const childVariants = {
 
       {/* 2. Restaurant Highlights */}
 
-      <section className="py-stack-lg px-margin-mobile md:px-margin-desktop bg-surface max-w-container-max mx-auto border-b border-outline-variant/20">
+      <section
+
+        className="relative z-10  flex flex-col items-center text-center overflow-hidden py-stack-lg px-margin-mobile md:px-margin-desktop bg-surface max-w-container-max mx-auto border-b border-outline-variant/20">
+        <h2 className="font-headline-md text-headline-md text-primary mb-4">
+          Sourced with Intention
+        </h2>
+
 
         <motion.div
-            variants={containerVariants}
-    initial="hidden"
-    whileInView="visible"
-    viewport={{ once: false, amount: 0.2 }}
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.2 }}
+          style={{ marginTop: "100px" }}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter ">
 
-          <motion.div 
-                variants={childVariants}
+          <motion.div
+            variants={childVariants}
 
-          className="flex flex-col items-center text-center p-8 hover-lift">
+            className="flex flex-col items-center text-center p-8 hover-lift">
 
             <span
               className="material-symbols-outlined text-4xl mb-4 text-[#C5A059]"
@@ -154,10 +299,10 @@ const childVariants = {
           </motion.div>
 
 
-          <motion.div 
-                variants={childVariants}
+          <motion.div
+            variants={childVariants}
 
-          className="flex flex-col items-center text-center p-8 hover-lift">
+            className="flex flex-col items-center text-center p-8 hover-lift">
 
             <span
               className="material-symbols-outlined text-4xl mb-4 text-[#C5A059]"
@@ -183,10 +328,10 @@ const childVariants = {
           </motion.div>
 
 
-          <motion.div 
-                variants={childVariants}
+          <motion.div
+            variants={childVariants}
 
-          className="flex flex-col items-center text-center p-8 hover-lift">
+            className="flex flex-col items-center text-center p-8 hover-lift">
 
             <span
               className="material-symbols-outlined text-4xl mb-4 text-[#C5A059]"
@@ -212,10 +357,10 @@ const childVariants = {
           </motion.div>
 
 
-          <motion.div 
-                variants={childVariants}
+          <motion.div
+            variants={childVariants}
 
-          className="flex flex-col items-center text-center p-8 hover-lift">
+            className="flex flex-col items-center text-center p-8 hover-lift">
 
             <span
               className="material-symbols-outlined text-4xl mb-4 text-[#C5A059]"
@@ -244,143 +389,152 @@ const childVariants = {
 
       </section>
 
+
+
       {/* 1. Our Story Hero */}
 
-      <section className="py-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
 
-        <div className="text-center max-w-3xl mx-auto space-y-6">
+      <div ref={transitionRef} className="relative">
 
-          <h1 className="font-display-lg text-display-lg text-primary">
-            Our Story
-          </h1>
+        <section ref={transitionRef} style={{ width: "80vw" }} className="relative py-stack-lg px-margin-mobile md:px-margin-desktop  mx-auto">
 
-          <p className="font-body-lg text-body-lg text-on-surface-variant">
-            A legacy of fire, flavor, and meticulous craftsmanship. Discover the roots of Ember &amp; Plate.
-          </p>
+          <div className="text-center max-w-3xl mx-auto space-y-6">
 
-        </div>
+            <h1 className="font-display-lg text-display-lg text-primary">
+              Our Story
+            </h1>
 
-        <motion.div 
-        initial={{ opacity: 0, y: 100 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: false, amount: 0.2 }}
-  transition={{
-    duration: 0.8,
-    ease: "easeOut",
-  }}
-        className="mt-stack-md w-full h-[60vh] overflow-hidden image-zoom relative">
+            <p className="font-body-lg text-body-lg text-on-surface-variant">
+              A legacy of fire, flavor, and meticulous craftsmanship. Discover the roots of {appName}.
+            </p>
 
-          <div
-            className="w-full h-full bg-cover bg-center absolute inset-0"
-            data-alt="A sweeping, cinematic wide shot of a high-end restaurant interior at twilight. The space features warm, ambient lighting from modern chandeliers and table candles, creating an intimate, exclusive atmosphere. Dark wood tones, charcoal walls, and subtle gold accents dominate the sophisticated palette. The aesthetic is luxurious, minimal, and welcoming."
-            style={{
-              backgroundImage:
-                "url('https://lh3.googleusercontent.com/aida-public/AB6AXuAtNbOcHgev_5MuETD9MtFKmq6lC5kr04zMrL7G0zOb1CBwkIQSFjmEzdnqL3Tx11zJu9u6LD16xV3ZIqiYtoB5auPf14PjP14YeoBjNCUTQqyn99GpgRspJeegeUp3fnrJloFzeQ8XS3IOtBK3HVbUH4ZVWPTKWOi405kMYIiHr6hJxrIniF7qD_WwPGuERa0OJvcRoFdfMLMVYN7jynqyhNcx5P-lA44RgAtjm_W83psuYlIWafhL')",
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 100 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.2 }}
+            transition={{
+              duration: 0.8,
+              ease: "easeOut",
             }}
-          ></div>
+            className="mt-stack-md w-full h-[70vh] overflow-hidden image-zoom relative">
 
-        </motion.div>
+            <div className="absolute z-40 bottom-20 left-1/3 -translate-x-1/2">
+              <Handwriting />
+            </div>
 
-      </section>
+            <div className="w-full h-full absolute inset-0">
+              {/* Background image */}
+              <div
+                className="w-full h-full bg-cover bg-center absolute inset-0"
+                data-alt="A sweeping, cinematic wide shot of a high-end restaurant interior at twilight."
+                style={{
+                  backgroundImage:
+                    "url('https://lh3.googleusercontent.com/aida-public/AB6AXuAtNbOcHgev_5MuETD9MtFKmq6lC5kr04zMrL7G0zOb1CBwkIQSFjmEzdnqL3Tx11zJu9u6LD16xV3ZIqiYtoB5auPf14PjP14YeoBjNCUTQqyn99GpgRspJeegeUp3fnrJloFzeQ8XS3IOtBK3HVbUH4ZVWPTKWOi405kMYIiHr6hJxrIniF7qD_WwPGuERa0OJvcRoFdfMLMVYN7jynqyhNcx5P-lA44RgAtjm_W83psuYlIWafhL')",
+                }}
+              />
+
+              {/* Dark overlay — no blur */}
+              <div className="absolute inset-0 bg-black/50" />
+            </div>
+
+          </motion.div>
+
+        </section>
 
 
-      {/* 2. Storytelling: History & Philosophy */}
+        {/* 2. Storytelling: History & Philosophy */}
+        <section
+          ref={section2Ref}
+          className="relative py-stack-lg px-margin-mobile md:px-margin-desktop  mx-auto grid grid-cols-1 md:grid-cols-2 gap-gutter items-center bg-cover bg-center bg-no-repeat"
+          style={{
+            height: "100vh", width: "100vw",
+            backgroundImage: `url("https://lh3.googleusercontent.com/aida-public/AB6AXuBUONCOy1AJ7awR1ssdEwpS09XEsW5jth-ySUt1AnrET-wNvk_G_xudd1iCFKNXxQFW0mH_-RbIrHX2zUSZdliqU2cq3OxGNGcjG2aEoBYyNKHtIfLv9woA-wLmloJguGDhW79A3Tyg-BdXk1_j1XEOHLnPkftvdJWCzH7HxjPZ6saHh6y9xYqgl6H0Kdd_KCmWu0-eloUjfrKRetGotjbggu-kUGm90KV_y5F5JVpO-3i5aPLoTmDj")`,
+          }}
+        >
+          {/* Dark overlay */}
+          <div className="absolute inset-0 bg-black/60" />
 
-      <section className="py-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-2 gap-gutter items-center">
-
-        <motion.div
-        initial={{ opacity: 0, x: -100 }}
-  whileInView={{ opacity: 1, x: 0 }}
-  viewport={{ once: false, amount: 0.2 }}
-  transition={{
-    duration: 0.8,
-    ease: "easeOut",
-  }}
-        className="order-2 md:order-1 h-[500px] overflow-hidden image-zoom relative border border-outline-variant/30">
-
-          <img
-            alt="Philosophy Plating"
-            className="w-full h-full object-cover absolute inset-0"
-            data-alt="A close-up, highly detailed shot of a chef's hands carefully arranging microgreens on a beautifully plated dish. The lighting is focused and dramatic, highlighting the textures of the food and the intense concentration of the chef. The surrounding environment is dark, emphasizing the bright, fresh colors of the ingredients. The mood is precise, artisanal, and culinary focused."
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUONCOy1AJ7awR1ssdEwpS09XEsW5jth-ySUt1AnrET-wNvk_G_xudd1iCFKNXxQFW0mH_-RbIrHX2zUSZdliqU2cq3OxGNGcjG2aEoBYyNKHtIfLv9woA-wLmloJguGDhW79A3Tyg-BdXk1_j1XEOHLnPkftvdJWCzH7HxjPZ6saHh6y9xYqgl6H0Kdd_KCmWu0-eloUjfrKRetGotjbggu-kUGm90KV_y5F5JVpO-3i5aPLoTmDj"
-          />
-
-        </motion.div>
-
-        <motion.div 
-                variants={containerVariants}
-    initial="hidden"
-    whileInView="visible"
-    viewport={{ once: false, amount: 0.2 }}
-        className="order-1 md:order-2 space-y-8 md:pl-margin-desktop">
-
-          <motion.h2 
-           variants={childVariants}
-          className="font-headline-lg text-headline-lg text-primary">
-            A Philosophy of Fire
-          </motion.h2>
-
-          
+          <motion.div
+            ref={section2ContentRef}
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.2 }}
+            className="relative z-10 md:col-span-2 space-y-8 flex flex-col justify-center"
+          >
+            <motion.h2
+              variants={childVariants}
+              className="font-headline-lg text-headline-lg text-white"
+            >
+              A Philosophy of Fire
+            </motion.h2>
 
             <motion.p
-             variants={childVariants}
-            className="space-y-4 text-on-surface-variant font-body-md text-body-md">
-              Born from a deep respect for the elemental forces of cooking, Ember &amp; Plate was founded on the belief that fire transforms not just food, but the entire dining experience. Our journey began in the rugged landscapes where open-flame cooking is a necessity, refined over decades into an art form.
+              variants={childVariants}
+              className="text-white font-body-md text-body-md"
+            >
+              Born from a deep respect for the elemental forces of cooking, {appName} was founded on the belief that fire transforms not just food, but the entire dining experience. Our journey began in the rugged landscapes where open-flame cooking is a necessity, refined over decades into an art form.
             </motion.p>
 
             <motion.p
-             variants={childVariants}
-             className="space-y-4 text-on-surface-variant font-body-md text-body-md">
+              variants={childVariants}
+              className="text-white font-body-md text-body-md"
+            >
               We source only the most exceptional, ethically raised ingredients, allowing their natural qualities to dictate our menu. Our commitment to quality is unwavering—every dish is a testament to our dedication to flavor, technique, and genuine hospitality.
             </motion.p>
 
-         
-
-          <motion.a
-           variants={childVariants}
-            className="inline-block text-link font-label-sm text-label-sm uppercase text-primary tracking-widest mt-4"
-            href="/menu"
-          >
-            Discover Our Menu
-          </motion.a>
-
-        </motion.div>
-
-      </section>
-
+            <motion.a
+              variants={childVariants}
+              className="inline-block w-fit text-link font-label-sm text-label-sm uppercase text-white tracking-widest mt-4"
+              href="/menu"
+            >
+              Discover Our Menu
+            </motion.a>
+          </motion.div>
+        </section></div>
 
       {/* 3. Meet the Chef */}
 
-      <section className="bg-primary-container text-on-primary py-stack-lg px-margin-mobile md:px-margin-desktop">
+      <section className="bg-primary-container mt-3 text-on-primary py-stack-lg px-margin-mobile md:px-margin-desktop">
 
         <div className="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-2 gap-gutter items-center">
 
-          <motion.div 
-               variants={containerVariants}
-    initial="hidden"
-    whileInView="visible"
-    viewport={{ once: false, amount: 0.2 }}
-          className="space-y-6 md:pr-margin-desktop">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.2 }}
+            className="space-y-6 md:pr-margin-desktop">
 
-            <motion.span 
-             variants={childVariants}
-            className="font-label-sm text-label-sm uppercase text-secondary tracking-widest">
+            <motion.span
+              variants={childVariants}
+              className="font-label-sm text-label-sm uppercase text-secondary tracking-widest">
               Head Chef
             </motion.span>
 
-            <motion.h2 
-            variants={childVariants}
-            className="font-headline-lg text-headline-lg text-on-primary">
+            <motion.h2
+              variants={childVariants}
+              className="font-headline-lg text-headline-lg text-on-primary">
               Marcus Vance
             </motion.h2>
 
             <motion.p variants={childVariants} className="font-body-lg text-body-lg text-on-primary-container leading-relaxed">
-              With over two decades of experience spanning the globe's culinary capitals, Chef Vance brings a relentless pursuit of perfection to Ember &amp; Plate. His signature approach marries classical French technique with the raw, untamed nature of live-fire cooking, resulting in bold, uncompromising flavors.
+              With over two decades of experience spanning the globe's culinary capitals, Chef Vance brings a relentless pursuit of perfection to {appName}. His signature approach marries classical French technique with the raw, untamed nature of live-fire cooking, resulting in bold, uncompromising flavors.
             </motion.p>
 
           </motion.div>
 
-          <div className="h-[600px] overflow-hidden image-zoom relative border border-secondary/30">
+          <motion.div
+           initial={{ opacity: 0, x: -100 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: false, amount: 0.2 }}
+            transition={{
+              duration: 1.4,
+              ease: "easeOut",
+            }}
+          className="h-[600px] overflow-hidden image-zoom relative border border-secondary/30">
 
             <img
               alt="Chef Marcus Vance"
@@ -389,7 +543,7 @@ const childVariants = {
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIWHJpFK4fsvg9ZW5OaJFLdZa62_b347ZzOMd2SbU0Piq_0tqBwCmshB6GGu2hIH8Gdy0gW4W2GXFdXVpgCxKoDp9guB2o5iZxgtd71T2iKxmHFRgZ15RlHRg0IbCJXC5f8aLHXISr8s1xCPA_t34sLgYhiymJFOLTBS-rHQo4rGaF4vEwEZriJkANlPWaawE64myou5x75ygUzf47sGoBfuEZLuNibAvxdU1Ee4MoB0IIuX0IQUKf"
             />
 
-          </div>
+          </motion.div>
 
         </div>
 
@@ -413,10 +567,10 @@ const childVariants = {
         </div>
 
 
-        <motion.div  variants={containerVariants}
-    initial="hidden"
-    whileInView="visible"
-    viewport={{ once: false, amount: 0.2 }} className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+        <motion.div variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.2 }} className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
 
           {/* Bento Item 1 */}
 
@@ -448,7 +602,7 @@ const childVariants = {
 
           {/* Bento Item 2 */}
 
-          <motion.div  variants={childVariants} className="hover-lift bg-surface-container-low p-8 border border-outline-variant/20 flex flex-col items-center text-center space-y-4">
+          <motion.div variants={childVariants} className="hover-lift bg-surface-container-low p-8 border border-outline-variant/20 flex flex-col items-center text-center space-y-4">
 
             <div className="w-16 h-16 rounded-full bg-secondary-container/20 flex items-center justify-center text-secondary">
 
@@ -511,7 +665,7 @@ const childVariants = {
       <section className="py-stack-lg px-margin-mobile md:px-margin-desktop text-center border-t border-outline-variant/20 max-w-3xl mx-auto">
 
         <h2 className="font-headline-lg text-headline-lg text-primary mb-6">
-          Experience EMBER &amp; PLATE
+          Experience {appName}
         </h2>
 
         <p className="font-body-lg text-body-lg text-on-surface-variant mb-8">
@@ -529,22 +683,22 @@ const childVariants = {
 
       {/* Gallery Header */}
 
-      <motion.section 
+      <motion.section
         initial={{ opacity: 0, y: 100 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: false, amount: 0.2 }}
-  transition={{
-    duration: 1.4,
-    ease: "easeOut",
-  }}
-      className="w-full pt-stack-lg pb-stack-md px-margin-mobile md:px-margin-desktop text-center max-w-container-max mx-auto">
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, amount: 0.2 }}
+        transition={{
+          duration: 1.4,
+          ease: "easeOut",
+        }}
+        className="w-full pt-stack-lg pb-stack-md px-margin-mobile md:px-margin-desktop text-center max-w-container-max mx-auto">
 
         <h1 className="font-display-lg text-display-lg text-primary mb-6">
           The Gallery
         </h1>
 
         <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">
-          A visual exploration of our culinary philosophy, intimate spaces, and the art of dining at Ember &amp; Plate.
+          A visual exploration of our culinary philosophy, intimate spaces, and the art of dining at {appName}.
         </p>
 
         <div className="w-16 h-px bg-[#C5A059] mx-auto mt-8"></div>
@@ -591,15 +745,15 @@ const childVariants = {
 
       <section className="w-full px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto mb-stack-lg">
 
-        <motion.div 
-        variants={containerVariants}
-    initial="hidden"
-    whileInView="visible"
-    viewport={{ once: false, amount: 0.2 }} className="masonry-grid">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.2 }} className="masonry-grid">
 
           {/* Gallery Item 1 */}
 
-          <motion.div  variants={childVariants} className="masonry-item relative group cursor-pointer bg-surface overflow-hidden">
+          <motion.div variants={childVariants} className="masonry-item relative group cursor-pointer bg-surface overflow-hidden">
 
             <img
               alt="Plated Dish"
@@ -624,7 +778,7 @@ const childVariants = {
 
           {/* Gallery Item 2 */}
 
-          <motion.div  variants={childVariants} className="masonry-item relative group cursor-pointer bg-surface overflow-hidden">
+          <motion.div variants={childVariants} className="masonry-item relative group cursor-pointer bg-surface overflow-hidden">
 
             <img
               alt="Restaurant Interior"
@@ -649,7 +803,7 @@ const childVariants = {
 
           {/* Gallery Item 3 */}
 
-          <motion.div  variants={childVariants} className="masonry-item relative group cursor-pointer bg-surface overflow-hidden">
+          <motion.div variants={childVariants} className="masonry-item relative group cursor-pointer bg-surface overflow-hidden">
 
             <img
               alt="Chef Plating"
@@ -674,7 +828,7 @@ const childVariants = {
 
           {/* Gallery Item 4 */}
 
-          <motion.div  variants={childVariants} className="masonry-item relative group cursor-pointer bg-surface overflow-hidden">
+          <motion.div variants={childVariants} className="masonry-item relative group cursor-pointer bg-surface overflow-hidden">
 
             <img
               alt="Craft Cocktail"
@@ -724,7 +878,7 @@ const childVariants = {
 
           {/* Gallery Item 6 */}
 
-          <motion.div  variants={childVariants} className="masonry-item relative group cursor-pointer bg-surface overflow-hidden">
+          <motion.div variants={childVariants} className="masonry-item relative group cursor-pointer bg-surface overflow-hidden">
 
             <img
               alt="Artisan Bread"
@@ -775,16 +929,16 @@ const childVariants = {
 
       <section className="py-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
 
-        <motion.div 
-           variants={containerVariants}
-    initial="hidden"
-    whileInView="visible"
-    viewport={{ once: false, amount: 0.2 }}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.2 }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
 
           {/* Article Card 1 */}
 
-          <motion.article  variants={childVariants} className="group cursor-pointer card-lift bg-[#FCFAFA] p-6 lg:p-10 flex flex-col h-full border border-outline-variant/30">
+          <motion.article variants={childVariants} className="group cursor-pointer card-lift bg-[#FCFAFA] p-6 lg:p-10 flex flex-col h-full border border-outline-variant/30">
 
             <div className="relative overflow-hidden mb-6 h-64 w-full bg-surface-container">
 
@@ -816,7 +970,7 @@ const childVariants = {
               </h2>
 
               <p className="font-body-md text-body-md text-on-surface-variant mb-6 flex-grow">
-                Discover the inspiration and meticulous technique behind the dishes that have defined Ember &amp; Plate&apos;s renowned tasting menu.
+                Discover the inspiration and meticulous technique behind the dishes that have defined {appName}&apos;s renowned tasting menu.
               </p>
 
               <a
@@ -832,7 +986,7 @@ const childVariants = {
 
           {/* Article Card 2 */}
 
-          <motion.article  variants={childVariants} className="group cursor-pointer card-lift bg-[#1A1A1A] p-6 lg:p-10 flex flex-col h-full">
+          <motion.article variants={childVariants} className="group cursor-pointer card-lift bg-[#1A1A1A] p-6 lg:p-10 flex flex-col h-full">
 
             <div className="relative overflow-hidden mb-6 h-64 w-full bg-tertiary">
 
@@ -880,7 +1034,7 @@ const childVariants = {
 
           {/* Article Card 3 */}
 
-          <motion.article  variants={childVariants} className="group cursor-pointer card-lift bg-[#FCFAFA] p-6 lg:p-10 flex flex-col h-full border border-outline-variant/30">
+          <motion.article variants={childVariants} className="group cursor-pointer card-lift bg-[#FCFAFA] p-6 lg:p-10 flex flex-col h-full border border-outline-variant/30">
 
             <div className="relative overflow-hidden mb-6 h-64 w-full bg-surface-container">
 

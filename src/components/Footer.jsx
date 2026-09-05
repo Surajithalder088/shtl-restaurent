@@ -1,6 +1,8 @@
 import React from 'react'
+import { useSelector } from 'react-redux';
 
 const Footer = () => {
+    const appName = useSelector((state) => state.app["app-name"]);
   return (
     <div>
 
@@ -11,11 +13,11 @@ const Footer = () => {
           <div className="col-span-1 md:col-span-1">
 
             <div className="font-headline-md text-headline-md text-on-primary dark:text-primary mb-6">
-              EMBER &amp; PLATE
+              {appName}
             </div>
 
             <p className="font-body-md text-body-md text-on-primary-container dark:text-on-surface-variant mb-4">
-              © 2024 EMBER &amp; PLATE. All rights reserved.
+              © 2024 {appName}. All rights reserved.
             </p>
 
           </div>
